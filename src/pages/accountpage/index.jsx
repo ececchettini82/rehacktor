@@ -100,7 +100,7 @@ export default function AccountPage(){
     }
 
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 flex py-6 items-start justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex py-6 items-start justify-center px-4">
             <form
                 onSubmit={updateProfile}
                 className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-3xl transition-transform hover:scale-[1.01]"
