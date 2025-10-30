@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { ConfirmSchema, getErrors, getFieldError }  from "../../lib/validationForm";
 import { useNavigate, Link } from "react-router";
+import { ConfirmSchema, getErrors, getFieldError }  from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
-
+import ErrorNotice from "../../components/common/ErrorNotice";
 export default function RegisterPage(){
 
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [touchedField, setTouchedField] = useState({});
+    const [errorRegister, setErrorRegister] = useState("");
     const [formState, setFormState] = useState({
         email: "",
         firstName: "",
@@ -26,6 +27,7 @@ export default function RegisterPage(){
     const onSubmit = async (e) => {
         e.preventDefault();
         setFormSubmitted(true);
+        setErrorRegister("");
 
         const {error, data} = ConfirmSchema.safeParse(formState);
 
@@ -49,7 +51,7 @@ export default function RegisterPage(){
             });
 
             if (signUpError) {
-                alert("👎🏻 Errore nel login: "+ signUpError.message);
+                setErrorRegister(signUpError.message);
             } else {
                 alert("Registrazione avvenuta 👍🏻!");
                 await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -57,7 +59,7 @@ export default function RegisterPage(){
             }
         } catch (err) {
             console.error('Errore durante la registrazione:', err);
-            alert("Errore imprevisto durante la registrazione");
+            setErrorRegister("Errore imprevisto durante la registrazione");
         }
     };
 
@@ -91,6 +93,8 @@ export default function RegisterPage(){
                 <h1 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
                     Crea un nuovo profilo
                 </h1>
+
+                {errorRegister && <ErrorNotice error={errorRegister} />}
 
                 <div className="space-y-4">
                     {/* Email */}

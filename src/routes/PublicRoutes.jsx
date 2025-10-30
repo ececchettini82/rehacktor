@@ -6,7 +6,9 @@ export default function PublicRoutes({ children }) {
     const { session } = useContext(SessionContext);
 
     if (session) {
-        return <Navigate to="/account" replace />;
+        return <Navigate to="/" replace />;
     }
+
+    // Se non sei loggato → renderizza le rotte figlie
     return <Outlet />;
 }

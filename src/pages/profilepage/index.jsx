@@ -7,7 +7,7 @@ export default function ProfilePage() {
     const { favorites, removeFavorite } = useContext(FavoritesContext);
 
     return (
-        <div className="min-h-screen">
+        <>
             <h1 className="text-3xl font-bold mb-6 text-gray-800 px-6">I preferiti di {session?.user.user_metadata.first_name}</h1>
 
             {favorites && favorites.length === 0 && (
@@ -52,6 +52,6 @@ export default function ProfilePage() {
                     </ul>
                 </div>
             )}
-        </div>
+        </>
     )
 }

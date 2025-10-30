@@ -8,5 +8,7 @@ export default function ProtectedRoutes({ children }) {
     if (!session) {
         return <Navigate to="/login" replace />;
     }
+
+    // Se sei loggato → renderizza la rotta figlia
     return <Outlet />;
 }

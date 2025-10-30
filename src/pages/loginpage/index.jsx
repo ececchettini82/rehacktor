@@ -43,7 +43,7 @@ export default function LoginPage() {
                 setErrorLogin(signInError.message);
             } else {
                 console.log("Login effettuato 👍🏻!");
-                navigate("/"); // redirect alla home
+                navigate("/", { replace: true }); // redirect alla home
             }
         }
     };
