@@ -106,7 +106,7 @@ export default function RegisterPage(){
                             onBlur={onBlur("email")}
                             aria-invalid={isInvalid("email")}
                             className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                            placeholder="esempio@email.com"
+                            placeholder="Scrivi la tua email..."
                             required
                         />
 
@@ -128,7 +128,7 @@ export default function RegisterPage(){
                             onBlur={onBlur("firstName")}
                             aria-invalid={isInvalid("firstName")}
                             className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                            placeholder="Mario"
+                            placeholder="Scrivi il tuo nome..."
                             required
                         />
                         {formErrors.firstName && (
@@ -149,7 +149,7 @@ export default function RegisterPage(){
                             onBlur={onBlur("lastName")}
                             aria-invalid={isInvalid("lastName")}
                             className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                            placeholder="Rossi"
+                            placeholder="Scrivi il tuo cognome..."
                             required
                         />
                         {formErrors.lastName && (
@@ -170,7 +170,7 @@ export default function RegisterPage(){
                             onBlur={onBlur("username")}
                             aria-invalid={isInvalid("username")}
                             className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                            placeholder="mario_rossi"
+                            placeholder="Scrivi il tuo username..."
                             required
                         />
                         {formErrors.username && (
