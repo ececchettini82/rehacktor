@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { FormSchemaLogin, ConfirmSchemaLogin, getErrors, getFieldError } from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
 import ErrorNotice from "../../components/common/ErrorNotice";
@@ -122,12 +122,12 @@ export default function LoginPage() {
 
                 <p className="text-center text-sm text-gray-500 mt-4">
                     Non hai un account?{" "}
-                    <a
-                        href="/register"
+                    <Link
+                        to="/register"
                         className="text-blue-500 hover:text-blue-700 font-medium"
                     >
                         Registrati
-                    </a>
+                    </Link>
                 </p>
             </form>
         </div>

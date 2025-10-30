@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ConfirmSchema, getErrors, getFieldError }  from "../../lib/validationForm";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import supabase from "../../supabase/supabase-client";
 
 export default function RegisterPage(){
@@ -209,12 +209,12 @@ export default function RegisterPage(){
 
                 <p className="text-center text-sm text-gray-500 mt-4">
                     Hai già un account?{" "}
-                    <a
-                        href="/login"
+                    <Link
+                        to="/login"
                         className="text-blue-500 hover:text-blue-700 font-medium"
                     >
                         Accedi
-                    </a>
+                    </Link>
                 </p>
             </form>
         </div>
