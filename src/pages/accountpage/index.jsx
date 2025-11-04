@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext  } from "react";
+import { useState, useEffect, useContext, useRef  } from "react";
 import supabase from "../../supabase/supabase-client";
 import SessionContext from "../../context/SessionContext";
 import Avatar from "../../components/Avatar";
 import Loading from "../../components/common/Loading.jsx";
+import { toast } from "sonner";
 export default function AccountPage(){
     const { session } = useContext(SessionContext);
     const [loading, setLoading] = useState(true);
@@ -12,6 +13,9 @@ export default function AccountPage(){
     const [email, setEmail] = useState(null);
     const [successMessage, setSuccessMessage] = useState("");
     const [avatarUrl, setAvatarUrl] = useState(null);
+
+    // ref per scorrere fino al messaggio di successo
+    const successRef = useRef(null);
 
     useEffect(() =>
     {
@@ -37,6 +41,7 @@ export default function AccountPage(){
 
                 if (!ignore) {
                     if (error) {
+                        toast.error("Errore nel caricamento del profilo");
                         console.warn(error);
                     } else if (data) {
                         setUsername(data.username);
@@ -47,7 +52,8 @@ export default function AccountPage(){
                 }
 
             } catch (error) {
-                alert(error.message);
+                toast.error("Errore nel caricamento del profilo");
+                console.log(error.message);
             } finally {
                 if (!ignore) setLoading(false);
             }
@@ -61,11 +67,20 @@ export default function AccountPage(){
         ,[session]
     );
 
+    useEffect(() => {
+        if (successMessage && successRef.current) {
+            successRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        }
+    }, [successMessage]);
+
     const updateProfile = async (event, avatarUrl) => {
         event.preventDefault()
 
         if (!session?.user) {
-            alert("Nessuna sessione attiva. Effettua nuovamente il login.");
+            toast.error("Nessuna sessione attiva. Effettua nuovamente il login.");
             return;
         }
 
@@ -90,10 +105,13 @@ export default function AccountPage(){
             } else{
                 setAvatarUrl(avatarUrl);
                 setSuccessMessage("Profilo aggiornato con successo!");
-                setTimeout(() => setSuccessMessage(""), 4000); // scompare dopo 4 secondi
+
+                // Nasconde il messaggio dopo 4 secondi
+                setTimeout(() => setSuccessMessage(""), 4000);
             }
         } catch (error) {
-            alert(error.message);
+            toast.error("Errore nel caricamento del profilo");
+            console.log(error.message);
         } finally {
             setLoading(false);
         }
@@ -111,9 +129,10 @@ export default function AccountPage(){
 
                 { loading && <Loading /> }
 
-                {/* ✅ Messaggio di successo */}
+                {/* Messaggio di successo */}
                 {successMessage && (
-                    <div className="mb-4 rounded-xl bg-green-100 border border-green-300 text-green-700 px-4 py-2 text-sm text-center font-medium animate-fade-in">
+                    <div  ref={successRef}
+                          className="mb-4 rounded-xl bg-green-100 border border-green-300 text-green-700 px-4 py-2 text-sm text-center font-medium animate-fade-in">
                         {successMessage}
                     </div>
                 )}

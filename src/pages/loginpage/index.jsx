@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router";
 import { FormSchemaLogin, ConfirmSchemaLogin, getErrors, getFieldError } from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
 import ErrorNotice from "../../components/common/ErrorNotice";
+import { toast } from "sonner";
 export default function LoginPage() {
     const navigate = useNavigate();
 
@@ -34,17 +35,40 @@ export default function LoginPage() {
             const errors = getErrors(error);
             setFormErrors(errors);
         } else {
-            const { error: signInError } = await supabase.auth.signInWithPassword({
+            const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
                 email: data.email,
                 password: data.password,
             });
 
             if (signInError) {
-                setErrorLogin(signInError.message);
-            } else {
-                console.log("Login effettuato 👍🏻!");
-                navigate("/", { replace: true }); // redirect alla home
+                if(signInError.message === "Invalid login credentials") {
+                    setErrorLogin("Credenziali non valide");
+                }else{
+                    setErrorLogin(signInError.message);
+                }
+                return;
             }
+
+            // 🔹 2. Recupera i dati utente dalla tabella profiles
+            const userId = authData.user?.id;
+            const { data: profile, error: profileError } = await supabase
+                .from("profiles")
+                .select("first_name, last_name")
+                .eq("id", userId)
+                .single();
+
+            // 🔹 3. Mostra messaggio personalizzato
+            if (profileError) {
+                toast.success("Login effettuato 👍🏻!");
+            } else {
+                const fullName = `${profile.first_name} ${profile.last_name}`;
+                toast.success(`Ciao ${fullName} 👋`);
+            }
+
+            // 🔹 4. Redirect dopo un piccolo delay
+            setTimeout(() => {
+                navigate("/", { replace: true });
+            }, 1500);
         }
     };
 

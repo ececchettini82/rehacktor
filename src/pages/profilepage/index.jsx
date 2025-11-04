@@ -40,7 +40,7 @@ export default function ProfilePage() {
                                     {/* Cuoricino per rimuovere dai preferiti */}
                                     <button
                                         type="button"
-                                        onClick={() => removeFavorite(game.game_id)}
+                                        onClick={() => removeFavorite(game.game_id,game.game_name)}
                                         aria-label="Rimuovi dai preferiti"
                                         className="cursor-pointer p-2 text-red-500 hover:scale-125 transition-transform"
                                     >

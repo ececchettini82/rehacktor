@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import supabase from "../supabase/supabase-client";
 import SessionContext from "./SessionContext";
+import { toast } from "sonner";
 export default function SessionProvider({children}) {
     const [session, setSession] = useState(null);
 
@@ -21,9 +22,16 @@ export default function SessionProvider({children}) {
 
     const signOut = async () => {
         const {error } = await supabase.auth.signOut();
-        if (error) console.log(error);
-        alert("Logout avvenuto 👍🏻!");
-        window.location.href = "/";
+        if (error) {
+            console.log(error);
+            toast.error("Errore durante il logout");
+        }else {
+            toast.success("Logout avvenuto!");
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500); // piccolo delay per mostrare la notifica
+        }
+
     };
 
     return (

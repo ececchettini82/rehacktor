@@ -2,6 +2,7 @@ import {Outlet} from "react-router";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
+import { Toaster } from "sonner";
 export default function Layout() {
     return (
         <div className="flex flex-col min-h-screen">
@@ -15,6 +16,17 @@ export default function Layout() {
                 </main>
             </div>
             <Footer />
+
+            <Toaster
+                richColors
+                position="top-center"
+                toastOptions={{
+                    style: {
+                        fontSize: "1.1rem",
+                        fontWeight: 500,
+                    },
+                }}
+            />
         </div>
     )
 }

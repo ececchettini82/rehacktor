@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import supabase from '../supabase/supabase-client'
+import { toast } from "sonner";
 export default function Avatar({ url, size, onUpload }) {
     const [avatarUrl, setAvatarUrl] = useState(null)
     const [uploading, setUploading] = useState(false)
@@ -17,6 +18,7 @@ export default function Avatar({ url, size, onUpload }) {
             const url = URL.createObjectURL(data)
             setAvatarUrl(url)
         } catch (error) {
+            toast.error("Errore nel caricamento dell’immagine");
             console.log('Error downloading image: ', error.message)
         }
     }
@@ -26,7 +28,7 @@ export default function Avatar({ url, size, onUpload }) {
             setUploading(true)
 
             if (!event.target.files || event.target.files.length === 0) {
-                throw new Error('You must select an image to upload.')
+                throw new Error("Seleziona un'immagine da caricare")
             }
 
             const file = event.target.files[0]
@@ -41,8 +43,10 @@ export default function Avatar({ url, size, onUpload }) {
             }
 
             onUpload(event, filePath)
+            toast.success("Avatar caricato con successo!");
         } catch (error) {
-            alert(error.message)
+            toast.error("Errore nel caricamento dell’immagine");
+            console.error("Errore durante l'upload:", error.message);
         } finally {
             setUploading(false)
         }
@@ -55,7 +59,7 @@ export default function Avatar({ url, size, onUpload }) {
                     src={ avatarUrl }
                     alt="Avatar"
                     className="avatar image mb-3"
-                    style={{ height: size, width: size, boxShadow: "3px 3px 8px grey" }}
+                    style={{ height: size, width: size, boxShadow: "3px 3px 8px grey", borderRadius: "50%" }}
                 />
             ) : (
                 <div className="avatar no-image" />

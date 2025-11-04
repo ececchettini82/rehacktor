@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router";
 import { ConfirmSchema, getErrors, getFieldError }  from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
 import ErrorNotice from "../../components/common/ErrorNotice";
+import { toast } from "sonner";
 export default function RegisterPage(){
 
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -53,10 +54,11 @@ export default function RegisterPage(){
             if (signUpError) {
                 setErrorRegister(signUpError.message);
             } else {
-                alert("Registrazione avvenuta 👍🏻!");
+                toast.success("Registrazione avvenuta!");
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 navigate("/");
             }
+
         } catch (err) {
             console.error('Errore durante la registrazione:', err);
             setErrorRegister("Errore imprevisto durante la registrazione");

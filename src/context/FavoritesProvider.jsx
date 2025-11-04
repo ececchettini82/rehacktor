@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useCallback } from "react";
 import supabase from "../supabase/supabase-client";
 import FavoritesContext from "./FavoritesContext";
 import SessionContext from "./SessionContext";
+import {toast} from "sonner";
 export default function FavoritesProvider({children}) {
 
     const [favorites, setFavorites] = useState([]);
@@ -13,7 +14,7 @@ export default function FavoritesProvider({children}) {
             .select("*")
             .eq("user_id", session?.user.id);
         if (error) {
-            alert(error);
+            toast.error(error);
         } else {
             setFavorites(favourites);
         }
@@ -31,15 +32,17 @@ export default function FavoritesProvider({children}) {
                 },
             ])
             .select();
+        toast.success(`${game.name} aggiunto ai preferiti`);
         getFavorites() // aggiunto questo
     };
 
-    const removeFavorite = async (gameId) => {
+    const removeFavorite = async (game_id, game_name) => {
         await supabase
             .from("favorites")
             .delete()
-            .eq("game_id", gameId)
+            .eq("game_id",game_id)
             .eq("user_id", session?.user.id);
+        toast.success(`${game_name} rimosso dai preferiti`);
 
         getFavorites();
     };
@@ -48,6 +51,7 @@ export default function FavoritesProvider({children}) {
         if (session) {
             getFavorites()
         }
+
         const favorites = supabase
             .channel("favorites")
             .on(

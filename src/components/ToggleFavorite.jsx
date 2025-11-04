@@ -51,7 +51,8 @@ export default function ToggleFavorite({ data }) {
         <button
             type="button"
             onClick={ () => {
-                isFavorite() ? removeFavorite(data.id) : addFavorites(data);
+                console.log(data);
+                isFavorite() ? removeFavorite(data.id,data.name) : addFavorites(data);
                 }
             }
             aria-label={ isFavorite()  ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti" }
